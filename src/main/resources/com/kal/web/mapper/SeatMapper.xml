@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kal.web.mapper.SeatMapper" >
+<resultMap id="Seat" type="com.kal.web.domain.Seat">
+    <id property="seatCode" column="seat_code"/>
+    <result property="seatRow" column="seat_row"/>
+    <result property="seatCol" column="seat_col"/>
+</resultMap>
+
+<insert id="addSeat">
+  	INSERT INTO Seat (seat_code, seat_row, seat_col)
+  	VALUES (#{seatCode},#{seatRow},#{seatCol})
+</insert>
+
+<select id="findNumberOfSeats" resultType="int">
+   	SELECT COUNT(*) FROM Seat
+</select>
+
+<select id="findSeat" resultMap="Seat" parameterType="hashMap">
+	SELECT*FROM ReservedSeat WHERE seat_code = #{seatCode}
+</select>
+
+<select id="findSeats" resultMap="Seat" parameterType="hashMap">
+   	SELECT*FROM ReservedSeat WHERE seat_code like #{seatCode}
+</select>
+
+<update id="updateSeat">
+	update Seat
+    <set>
+      <if test="seatCode != null">seat_code = #{seatCode},</if>
+      <if test="seatCode != null">seat_row = #{seatRow},</if>
+      <if test="seatCode != null">seat_col = #{seatCol}</if>
+    </set>
+  where seat_code = #{seatCode}
+</update>
+
+<delete id="deleteSeat" parameterType="hashMap">
+  DELETE FROM ReservedSeat WHERE ${key} = #{value}
+</delete>
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kal.web.mapper.FlightMapper">
+	<resultMap id="Flight" type="com.kal.web.domain.Flight">
+		<id property="flightSeq" column="flight_seq" />
+		<result property="flightName" column="flight_name" />
+		<result property="flightType" column="flight_type" />
+		<result property="seatCount" column="seat_count" />
+	</resultMap>
+
+	<!--C -->
+	<insert id="addFlight">
+	
+	</insert>
+	
+	<select id="findNumberOfFlights" resultType="int">
+	</select>
+	
+
+	<!--R -->
+	<select id="findFlight" resultType="com.kal.web.domain.Flight" parameterType="hashMap">
+	</select>
+	
+
+
+
+	<!--U -->
+	<update id="updateFlight">
+	</update>
+	
+	<!--D-->
+	<select id="deleteFlight" >
+	</select>
+
+</mapper>

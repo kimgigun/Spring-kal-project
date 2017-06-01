@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kal.web.mapper.ReservedSeatMapper" >
+	<resultMap id="ReservedSeat" type="com.kal.web.domain.ReservedSeat">
+	    <id property="resSeatSeq" column="res_seat_seq"/>
+	    <result property="seatCode" column="seat_code"/>
+	    <result property="seatClass" column="seat_class"/>
+	    <result property="scheSeq" column="sche_seq"/>
+	    <result property="userId" column="user_id"/>
+	    <result property="resPrice" column="res_price"/>
+	</resultMap>
+	
+   <resultMap id="MyReservationView" type="com.kal.web.domain.MyReservationView">
+      <id property="scheSeq" column="sche_seq" />
+      <result property="scheDepartureTime" column="sche_departure_time" />
+      <result property="scheArrivalTime" column="sche_arrival_time" />
+      <result property="firstName" column="first_name" />
+      <result property="scheDate" column="sche_date" />
+      <result property="routeSeq" column="route_seq" />
+      <result property="routeFrom" column="route_from" />
+      <result property="routeTo" column="route_to" />
+      <result property="userId" column="user_id" />
+      <result property="userPass" column="user_pass" />
+      <result property="familyName" column="family_name" />
+      <result property="firstName" column="first_name" />
+      <result property="korName" column="kor_name" />
+      <result property="phoneNo" column="phone_no" />
+      <result property="birthDate" column="birth_date" />
+      <result property="userGen" column="user_gen" />
+      <result property="userEmail" column="user_email" />
+      <result property="userAddr" column="user_addr" />
+      <result property="userPostNum" column="user_post_num" />
+      <result property="resSeatSeq" column="res_seat_seq" />
+      <result property="resPrice" column="res_price" />
+      <result property="seatCode" column="seat_code" />
+   </resultMap>
+	
+	
+	<!-- ReservedSeat -->
+	<insert id="addReservedSeat" >
+	  	INSERT INTO ReservedSeat (seat_code, sche_seq, user_id, res_price, seat_class)
+	  	VALUES (#{seatCode},#{scheSeq},#{userId},#{resPrice},#{seatClass})
+	</insert>
+	<insert id="tempAddRes" >
+	  	INSERT INTO ReservedSeat (seat_code, sche_seq, user_id, res_price, seat_class)
+	  	VALUES (#{seatCode},#{scheSeq},#{userId},#{resPrice},#{seatClass})
+	</insert>
+	
+	<select id="findNumberOfReservedSeat" resultType="int" resultMap="ReservedSeat">
+	   	SELECT COUNT(*) FROM ReservedSeat WHERE sche_seq = #{value}
+	</select>
+	
+	<select id="allNumberOfReservedSeat" resultType="int" resultMap="ReservedSeat">
+	   	SELECT COUNT(*) FROM ReservedSeat 
+	</select>
+	
+	<select id="findReservedSeat" resultMap="ReservedSeat" parameterType="hashMap">
+		SELECT*FROM ReservedSeat WHERE ${key} = #{value}
+	</select>
+	
+	<select id="findReservedSeats" resultMap="ReservedSeat" parameterType="hashMap">
+	   	SELECT*FROM ReservedSeat WHERE sche_seq = #{scheSeq} and seat_class = #{seatClass}
+	</select>
+	
+	<update id="updateReservedSeat">
+	  UPDATE ReservedSeat SET
+	     seat_code = #{seatCode},
+	     seat_class = #{seatClass}
+	  WHERE res_seat_seq = #{resSeatSeq}
+	</update>
+	
+	<delete id="deleteReservedSeat" parameterType="hashMap">
+	  	DELETE FROM ReservedSeat WHERE res_seat_seq = #{resSeatSeq}
+	</delete>
+	
+	<select id="existReservaedSeat" resultType="int" parameterType="hashMap">
+		SELECT COUNT(*) FROM ReservedSeat WHERE sche_seq = #{scheSeq} and seat_class = #{seatClass} and seat_code = #{seatCode}
+	</select>
+	<select id="existReservaedUserSeat" resultType="int" parameterType="hashMap">
+		SELECT COUNT(*) FROM ReservedSeat WHERE sche_seq = #{scheSeq} and user_id = #{userId}
+	</select>
+
+	<!--  SSH  -->
+	<select id="getMyReservation" resultMap="MyReservationView" parameterType="hashMap">
+		SELECT*FROM MyReservationView WHERE user_id = #{userId}
+	</select>
+	
+	<!-- gigun -->
+	<select id="findReservedSeatView" resultMap="MyReservationView" parameterType="hashMap">
+	SELECT * FROM MyReservationView WHERE sche_date = #{reserDate} 
+	<if test="departure != ''">AND route_from = #{departure}</if> 
+	<if test="destination != ''">AND route_to = #{destination}</if>
+	<if test="userId != ''">AND user_id = #{userId}</if>
+	</select>
+	<!-- gigun -->
+	<select id="findStatisticView" resultMap="MyReservationView" parameterType="hashMap">
+	SELECT *  FROM MyReservationView WHERE sche_date BETWEEN #{startDate} AND #{endDate};
+	</select>
+
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kal.web.mapper.ScheduleMapper">
+	<resultMap id="Schedule" type="com.kal.web.domain.Schedule">
+		<id property="scheSeq" column="sche_seq" />
+		<result property="routeSeq" column="route_seq" />
+		<result property="scheDepartureTime" column="sche_departure_time" />
+		<result property="scheArrivalTime" column="sche_arrival_time" />
+		<result property="scheDate" column="sche_date" />
+	</resultMap>
+	<resultMap id="ScheduleView" type="com.kal.web.domain.ScheduleView">
+		<id property="scheSeq" column="sche_seq" />
+		<result property="scheDepartureTime" column="sche_departure_time" />
+		<result property="scheArrivalTime" column="sche_arrival_time" />
+		<result property="scheDate" column="sche_date" />
+		<result property="routeSeq" column="route_seq" />
+		<result property="routeFrom" column="route_from" />
+		<result property="routeTo" column="route_to" />
+		<result property="flightSeq" column="flight_seq" />
+		<result property="flightName" column="flight_name" />
+		<result property="flightType" column="flight_type" />
+		<result property="seatCount" column="seat_count" />
+	</resultMap>
+
+	<!--C -->
+	<insert id="addSchedule">
+	INSERT INTO Schedule(route_seq,sche_departure_time,sche_arrival_time,sche_date)
+	VALUES(${route},#{depTime},#{arrTime},#{date});
+	</insert>
+
+	<!--  COUNT  -->
+	<select id="findNumberOfSchedules" resultType="int">
+	<!--  SSH  -->	
+	</select>
+	<select id="findScheSeq" resultMap="ScheduleView" parameterType="hashMap">
+		SELECT*FROM ScheduleView WHERE route_from = #{routeFrom} AND route_to = #{routeTo} and sche_date = #{scheDate}
+	</select>
+	<!--R -->
+	<select id="findSchedule" resultMap="Schedule" parameterType="hashMap">
+		SELECT * FROM Schedule WHERE route_seq = #{routeSeq} AND sche_date = #{scheDate}
+	</select>
+	<!--gigun -->
+	<select id="findView"  resultMap="ScheduleView" parameterType="hashMap">
+		SELECT * FROM scheduleView
+		<where>
+		<if test="date != ''">sche_date = #{date}</if>
+		<if test= "routeFrom !=''"> AND route_from = #{routeFrom}</if> 
+		<if test= "routeTo != ''"> AND route_to = #{routeTo}</if> 
+		</where>
+	</select>
+	<!--R -->
+	
+    <!--U -->
+	<update id="updateSchedule">
+	UPDATE Schedule SET
+		sche_date = #{scheDate},
+		sche_departure_time = #{departTime},
+		sche_arrival_time = #{arrtime}
+	WHERE sche_seq = #{scheNum};
+	</update>
+	
+	<!--D-->
+	<delete id="deleteSchedule" >
+	DELETE FROM Schedule WHERE sche_seq=#{scheNum};
+	</delete>
+
+</mapper>

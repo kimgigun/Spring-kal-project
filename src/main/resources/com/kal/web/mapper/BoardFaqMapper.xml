@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kal.web.mapper.BoardFAQMapper" >
+     <resultMap id="BoardFAQ" type="com.kal.web.domain.BoardFAQ">
+       <id property="faqSeq" column="faq_seq" />
+       <result property="userId" column="user_id"/>
+       <result property="faqReq" column="faq_req"/>
+       <result property="faqAnswer" column="faq_answer"/>
+       <result property="faqReqType" column="faq_req_type"/>
+     </resultMap>
+      <insert id="addBoardFAQ">
+      INSERT INTO faq (user_id,faq_req,faq_answer,faq_req_type) VALUES(#{id},#{qna},#{faqAnswer},#{qnatype})
+      </insert>
+      <select id="allFindBoardFAQs" resultMap="BoardFAQ">
+      SELECT * FROM FAQ ORDER BY faq_seq DESC
+      </select>
+      <select id="findBoardFAQs" resultMap="BoardFAQ" parameterType="hashMap">
+      SELECT * FROM faq WHERE faq_req_type like #{selectType} ORDER BY faq_seq DESC
+      </select>
+      <select id="allNumberOfBoardFAQs"  resultType="int">
+      SELECT COUNT(*) FROM FAQ
+      </select>
+      <select id="findNumberOfBoardFAQs"  resultType="int" parameterType="hashMap">
+      SELECT COUNT(*) FROM faq WHERE faq_req_type = #{selectType} 
+      </select>
+      <update id="updateBoardFAQ"></update>
+      <delete id="deleteBoardFAQ"></delete>
+     
+</mapper>

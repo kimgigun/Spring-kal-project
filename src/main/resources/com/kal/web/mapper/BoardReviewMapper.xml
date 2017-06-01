@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kal.web.mapper.BoardReviewMapper" >
+	<resultMap id="BoardReview" type="com.kal.web.domain.BoardReview">
+       <id property="revSeq" column="rev_seq"/>
+       <result property="revRegDate" column="rev_reg_date"/>
+	</resultMap>
+	 <select id="findBoardReview" resultMap="BoardReview" parameterType="hashMap"></select>
+	 <insert id="addBoardReview"></insert>
+	 <update id="updateBoardReview"></update>
+	 <delete id="deleteBoardReview"></delete>
+	
+</mapper>

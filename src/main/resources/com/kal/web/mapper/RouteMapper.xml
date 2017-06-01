@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kal.web.mapper.RouteMapper">
+	<resultMap id="Route" type="com.kal.web.domain.Route">
+		<id property="routeSeq" column="route_seq" />
+		<result property="flightSeq" column="flight_seq" />
+		<result property="routeFrom" column="route_from" />
+		<result property="routeTo" column="route_to" />
+		
+	</resultMap>
+
+		<!--C -->
+	<insert id="addRoute">
+	INSERT INTO Route(flight_seq,route_from,route_to) 
+	VALUES (#{flightSeq}, #{routeFrom}, #{routeTo});
+	</insert>
+	
+	<select id="findNumberOfRoutes" resultType="int">
+	</select>
+	
+	<!--U -->
+	<update id="updateRoute" >
+		UPDATE Route SET
+		route_from = #{deparTime},
+		route_to = #{arrTime}
+	WHERE route_seq = ${routeSeq};
+	</update>
+	
+	<!--D-->
+	<delete id="deleteRoute" >
+	DELETE FROM Route WHERE route_seq=#{routeSeq};
+	</delete>
+	
+	<!--R -->
+	<select id="findRoute" resultMap="Route" parameterType="hashMap">
+		SELECT*FROM Route WHERE route_from = #{routeFrom} and route_to = #{routeTo} and flight_seq = #{flightSeq}
+	</select>
+	
+	<select id="findRouteList" resultMap="Route">
+	SELECT * FROM  Route Group BY route_from
+	</select>
+	<!-- gigun -->
+	<select id="findRoutes" resultMap="Route" parameterType="hashMap">
+	SELECT * FROM Route 
+	<where>
+	<if test="flightSeq != ''">flight_seq = #{flightSeq} </if>
+	<if test="routeFrom != ''">AND route_from = #{routeFrom} </if>
+	<if test="routeTo != ''">AND route_to = #{routeTo} </if>
+	</where>
+	</select>
+	
+	<select id="findRouteTo" resultMap="Route">
+	SELECT route_from FROM Route GROUP BY route_from;
+	</select> 
+	
+	
+	
+</mapper>
